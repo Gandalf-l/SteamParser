@@ -1,4 +1,4 @@
 # SteamParser
 Parser games of Steam
 
-pip install requirements.txt
+pip install -r requirements.txt
