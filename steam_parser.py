@@ -74,7 +74,7 @@ class SteamParser(object):
     except:
       game.graphics = system_requirment[system_requirment.find('Graphics:') + 9:
                                         system_requirment.find('DirectX:')].split(' or ')
-    if system_requirment.find('Storage:') != - 1:
+    if system_requirment.find('Storage:') != -1:
       game.storage = system_requirment[system_requirment.find('Storage:') + 8: system_requirment.rfind('GB') + 2]
     game.language = [a.find('td').text.replace('\r', '').replace('\t', '').replace('\n', '')
                      for a in soup.find('table', class_='game_language_options').find_all('tr')[1:]]
