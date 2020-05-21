@@ -33,7 +33,7 @@ class SteamParser(object):
         game.url_photo = url_photos[i]
         game.title = title[i]
         game.release_date = datetime.strptime(release_dates[i].replace(',', ''), '%b %d %Y').strftime('%d.%m.%Y')
-        game.price = prices[i] if prices[i] == 'Free to Play' else float(prices[i][1:])
+        game.price = 0.0 if prices[i] == 'Free to Play' else float(prices[i][1:])
         self.get_page_game(link, game)
         Mongo.write_mongo(game)
       except Exception as ex:
