@@ -19,7 +19,6 @@ class SteamParser(object):
     soup = BeautifulSoup(html, 'lxml')
     div = soup.find('div', id="search_resultsRows")
     links = [a['href'][:a['href'].rfind('/')] for a in div.find_all('a')]
-    url_photos = [a['src'] for a in div.find_all('img')]
     title = [a.text.strip() for a in div.find_all('span', class_='title')]
     release_dates = [a.text for a in div.find_all('div', class_='search_released')]
     prices = [a.text.strip()
@@ -30,7 +29,6 @@ class SteamParser(object):
     for i, link in enumerate(links):
       try:
         game = Game()
-        game.url_photo = url_photos[i]
         game.title = title[i]
         game.release_date = datetime.strptime(release_dates[i].replace(',', ''), '%b %d %Y').strftime('%d.%m.%Y')
         game.price = 0.0 if prices[i] == 'Free to Play' else float(prices[i][1:])
@@ -50,6 +48,7 @@ class SteamParser(object):
   def get_page_game(self, link, game):
     html = self.get_html(link)
     soup = BeautifulSoup(html, 'lxml')
+    game.url_photo = soup.find('img', class_="game_header_image_full")['src']
     game.genre = soup.find('div', class_='block_content_inner').find('a').text
     game.description = soup.find('div', class_='game_description_snippet') \
       .text.replace('\r', '').replace('\t', '').replace('\n', '')
